@@ -322,21 +322,40 @@ export default function FreeResultsPage() {
       {/* Filter Tabs */}
       <div className="px-4 py-3 border-b border-slate-200">
         <div className="relative">
-          {/* Left scroll indicator arrow */}
-          <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-white/90 rounded-full flex items-center justify-center z-10 pointer-events-none">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400">
+          {/* Left scroll arrow */}
+          <button 
+            onClick={() => {
+              const container = document.getElementById('tabs-container');
+              if (container) {
+                container.scrollBy({ left: -100, behavior: 'smooth' });
+              }
+            }}
+            className="absolute left-0 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-white/95 rounded-full flex items-center justify-center z-10 shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-600">
               <path d="m15 18-6-6 6-6"/>
             </svg>
-          </div>
+          </button>
           
-          {/* Right scroll indicator arrow */}
-          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-white/90 rounded-full flex items-center justify-center z-10 pointer-events-none">
-            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400">
+          {/* Right scroll arrow */}
+          <button 
+            onClick={() => {
+              const container = document.getElementById('tabs-container');
+              if (container) {
+                container.scrollBy({ left: 100, behavior: 'smooth' });
+              }
+            }}
+            className="absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-8 bg-white/95 rounded-full flex items-center justify-center z-10 shadow-sm border border-slate-200 hover:bg-slate-50 transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-600">
               <path d="m9 18 6-6-6-6"/>
             </svg>
-          </div>
+          </button>
           
-          <div className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+          <div 
+            id="tabs-container"
+            className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none] px-8"
+          >
             {filterTabs.map((tab) => (
               <button
                 key={tab}
