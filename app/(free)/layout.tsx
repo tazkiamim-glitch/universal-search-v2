@@ -16,7 +16,7 @@ export default function FreeLayout({ children }: { children: React.ReactNode }) 
   ]
 
   return (
-    <div className="w-full max-w-md h-[85vh] bg-white flex flex-col shadow-2xl rounded-3xl overflow-hidden relative">
+    <div className="w-full max-w-md h-[95vh] bg-white flex flex-col shadow-2xl rounded-3xl overflow-hidden relative">
       {/* 
         THIS IS THE SCROLLABLE CONTENT AREA.
         `flex-grow` makes it fill the space, and `overflow-y-auto` makes IT scroll, not the whole page.
