@@ -72,8 +72,8 @@ function ResultCard({ thumbnailUrl, topicName, chapterName, duration, watchCount
         {/* CTA Button */}
         <div className="mt-3 flex justify-end">
           {isUnlock ? (
-            <button className="px-4 py-2 text-sm font-semibold rounded-full bg-yellow-400 text-yellow-900 hover:bg-yellow-500 transition-colors">
-              Unlock
+            <button className="px-4 py-2 text-sm font-semibold rounded-full bg-blue-400 text-blue-900 hover:bg-blue-500 transition-colors">
+              Take Trial
             </button>
           ) : (
             <button className="px-4 py-2 text-sm font-semibold rounded-full bg-pink-500 text-white hover:bg-pink-600 transition-colors">
@@ -290,8 +290,8 @@ export default function FreeResultsPage() {
 
   return (
     <div className="mx-auto max-w-[480px]">
-      {/* Header with Back Arrow, Title, and Search Icon */}
-      <header className="flex-shrink-0 flex items-center justify-between p-4 bg-white/80 backdrop-blur-sm border-b border-slate-200">
+      {/* Sticky Header with Back Arrow, Title, and Search Icon */}
+      <header className="sticky top-0 z-10 flex-shrink-0 flex items-center justify-between p-4 bg-white border-b border-slate-200">
         <div className="flex items-center gap-4">
           <button 
             onClick={() => router.back()}
@@ -321,20 +321,36 @@ export default function FreeResultsPage() {
 
       {/* Filter Tabs */}
       <div className="px-4 py-3 border-b border-slate-200">
-        <div className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {filterTabs.map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
-                activeTab === tab
-                  ? 'bg-slate-900 text-white'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-              }`}
-            >
-              {tab}
-            </button>
-          ))}
+        <div className="relative">
+          {/* Left scroll indicator arrow */}
+          <div className="absolute left-0 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-white/90 rounded-full flex items-center justify-center z-10 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+          </div>
+          
+          {/* Right scroll indicator arrow */}
+          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-6 h-6 bg-white/90 rounded-full flex items-center justify-center z-10 pointer-events-none">
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-slate-400">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </div>
+          
+          <div className="flex gap-2 overflow-x-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+            {filterTabs.map((tab) => (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap transition-colors ${
+                  activeTab === tab
+                    ? 'bg-slate-900 text-white'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                }`}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 

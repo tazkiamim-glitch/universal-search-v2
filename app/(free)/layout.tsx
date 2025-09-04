@@ -9,7 +9,7 @@ export default function FreeLayout({ children }: { children: React.ReactNode }) 
 
   const tabs = [
     { href: "/freehomepage", label: "Home", icon: Home },
-    { href: "/courses", label: "Courses", icon: BookOpen },
+    { href: "/blank", label: "Courses", icon: BookOpen },
     { href: "/", label: "Search", icon: Search },
     { href: "/inbox", label: "Inbox", icon: Inbox },
     { href: "/ai", label: "Shikho AI", icon: Bot },
