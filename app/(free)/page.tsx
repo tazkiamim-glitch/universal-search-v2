@@ -215,6 +215,38 @@ export default function FreeSearchPage() {
           </section>
         )}
 
+        {/* RECENT SEARCHES */}
+        {!activeSubject && recent.length > 0 && (
+          <section className="mt-6">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-base md:text-lg font-bold text-slate-700 flex items-center gap-2">
+                <Clock className="h-4 w-4 text-slate-600" />
+                <span>Recent Searches</span>
+              </h3>
+              <button
+                onClick={() => {
+                  setRecent([])
+                  try { localStorage.removeItem("free_recent_searches") } catch {}
+                }}
+                className="text-xs text-slate-500 hover:text-slate-700 font-medium"
+              >
+                Clear All
+              </button>
+            </div>
+            <div className="flex flex-wrap gap-2 justify-center">
+              {recent.slice(0, 6).map((t) => (
+                <button
+                  key={t}
+                  onClick={() => runSearch(t)}
+                  className="px-4 py-2 text-sm bg-white rounded-full ring-1 ring-slate-200 shadow-sm hover:ring-slate-300 transition-all"
+                >
+                  {t}
+                </button>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* TRENDING */}
         {!activeSubject && (
           <section className="mt-6">
@@ -227,7 +259,7 @@ export default function FreeSearchPage() {
                 <button
                   key={t}
                   onClick={() => runSearch(t)}
-                  className="px-4 py-2 text-sm bg-white rounded-full ring-1 ring-slate-200 shadow-sm"
+                  className="px-4 py-2 text-sm bg-white rounded-full ring-1 ring-slate-200 shadow-sm hover:ring-slate-300 transition-all"
                 >
                   {t}
                 </button>
@@ -236,7 +268,29 @@ export default function FreeSearchPage() {
           </section>
         )}
 
-        {/* RECENTS: removed per requirements */}
+        {/* SHORTCUTS */}
+        {!activeSubject && (
+          <section className="mt-6">
+            <h3 className="text-base md:text-lg font-bold text-slate-700 mb-3 flex items-center justify-center gap-2 text-center">
+              <Home className="h-4 w-4 text-slate-600" />
+              <span>Quick Access</span>
+            </h3>
+            <div className="flex flex-wrap gap-2 justify-center">
+              <button
+                onClick={() => router.push("/courses")}
+                className="px-4 py-2 text-sm bg-gradient-to-r from-pink-50 to-purple-50 text-pink-700 rounded-full ring-1 ring-pink-200 shadow-sm hover:shadow-md transition-all font-semibold"
+              >
+                📚 Browse All Courses
+              </button>
+              <button
+                onClick={() => runSearch("biology")}
+                className="px-4 py-2 text-sm bg-gradient-to-r from-emerald-50 to-teal-50 text-emerald-700 rounded-full ring-1 ring-emerald-200 shadow-sm hover:shadow-md transition-all font-semibold"
+              >
+                🧬 Explore Biology
+              </button>
+            </div>
+          </section>
+        )}
       </div>
     </div>
   )
