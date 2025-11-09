@@ -1,5 +1,5 @@
 import { INTENT_KEYWORDS, CONTENT_TYPE_GROUPS } from "./config";
-import { tokenize } from "./normalize";
+import { tokenize, transliterateBnToLatin } from "./normalize";
 import { Subject } from "./types";
 
 export type Intent = {
@@ -17,7 +17,10 @@ export type Intent = {
 };
 
 export function detectIntent(query: string, subjects: Subject[]): Intent {
-  const lower = normalizeDigits(tokenize(query).map(t => t.toLowerCase()));
+  const rawTokens = tokenize(query);
+  // Include transliterated variants so Banglish and cross-script queries match
+  const withTrans = rawTokens.flatMap(t => [t, transliterateBnToLatin(t)]).filter(Boolean);
+  const lower = normalizeDigits(withTrans.map(t => t.toLowerCase()));
 
   const flags = {
     notes: intersects(lower, INTENT_KEYWORDS.notes),
@@ -44,8 +47,16 @@ export function detectIntent(query: string, subjects: Subject[]): Intent {
   ].map(s => s.toLowerCase()));
   const tokens = lower.filter(t => !intentTerms.has(t));
 
-  // Remove generic stopwords that hurt matching/thresholds (demo convenience)
-  const STOPWORDS = new Set(["all", "all-in-one", "allinone", "demo", "সব", "পত্র"]);
+  // Remove generic stopwords that hurt matching/thresholds (BN + EN)
+  // Bengali stopwords: common filler words
+  // English stopwords: common filler words
+  const STOPWORDS = new Set([
+    // English
+    "all", "all-in-one", "allinone", "demo", "the", "and", "a", "an", "is", "are", "was", "were", 
+    "of", "in", "on", "at", "to", "for", "from", "with", "by", "as",
+    // Bengali
+    "সব", "পত্র", "ও", "এর", "এ", "একটি", "একটা", "যখন", "যেখানে", "যেমন"
+  ]);
   const cleaned = tokens.filter(t => !STOPWORDS.has(t));
 
   // Subject candidates

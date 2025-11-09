@@ -1,3 +1,3 @@
-export { normalize, tokenize, highlight, isBengaliToken, isLatinToken } from "./normalize.tsx";
+export { normalize, tokenize, highlight, isBengaliToken, isLatinToken, transliterateBnToLatin } from "./normalize.tsx";
 
 

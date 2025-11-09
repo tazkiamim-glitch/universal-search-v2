@@ -72,8 +72,31 @@ export type MixedResult = {
     searchableString: string;
     titleMatches: number;
     searchableMatches: number;
+    baseMatchScore: number;
+    // Individual field scores for detailed breakdown
+    scores?: {
+      titleScore: number;
+      topicScore: number;
+      chapterScore: number;
+      subjectScore: number;
+      descriptionScore: number;
+      programScore: number;
+      phaseScore: number;
+      synonymScore: number;
+    };
     freeContentBoost: boolean;
     contentTypeBoost: number;
     recencyBoost: boolean;
+    intentBoost?: number;
+    durationBoost?: number;
+    popularityBoost?: number;
+    teacherBoost?: number;
+    jitter?: number;
+    // Match type tracking
+    exactPhraseMatches?: number;
+    directTokenMatches?: number;
+    synonymMatches?: number;
+    partialMatches?: number;
+    fuzzyMatches?: number;
   };
 };

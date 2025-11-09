@@ -618,6 +618,103 @@ export const contents: Content[] = [
     isFree: true, 
     statsText: "৯.৪ হাজার+" 
   },
+
+  // More Class 6 SSC Q1 Math (Numbers) to ensure 3-5 per group
+  { 
+    id: "cnt-6-math-numbers-recorded", 
+    topicId: "tp-6-math-numbers", 
+    type: "RECORDED_CLASS", 
+    title: "প্রাকৃতিক সংখ্যা - রেকর্ডেড ক্লাস", 
+    teacher: "সালমা খাতুন",
+    description: "প্রাকৃতিক সংখ্যা ধারণার পূর্ণাঙ্গ রেকর্ডেড লেকচার",
+    isFree: false, 
+    durationSec: 2100, 
+    statsText: "১২.১ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-numbers-story", 
+    topicId: "tp-6-math-numbers", 
+    type: "STORY", 
+    title: "প্রাকৃতিক সংখ্যার গল্প", 
+    teacher: "সালমা খাতুন",
+    description: "প্রাকৃতিক সংখ্যার ইতিহাস ও প্রয়োগ নিয়ে গল্প",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৬.২ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-numbers-guideline", 
+    topicId: "tp-6-math-numbers", 
+    type: "GUIDELINE_VIDEO", 
+    title: "প্রাকৃতিক সংখ্যা শেখার গাইডলাইন", 
+    teacher: "সালমা খাতুন",
+    description: "দ্রুত শেখার কৌশল ও টিপস",
+    isFree: true, 
+    durationSec: 360, 
+    statsText: "৭.১ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-numbers-pdf", 
+    topicId: "tp-6-math-numbers", 
+    type: "PDF_NOTES", 
+    title: "প্রাকৃতিক সংখ্যা PDF নোট", 
+    teacher: "সালমা খাতুন",
+    description: "প্রাকৃতিক সংখ্যার সারসংক্ষেপ নোট",
+    isFree: false, 
+    statsText: "১০.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-numbers-smart", 
+    topicId: "tp-6-math-numbers", 
+    type: "SMART_NOTE", 
+    title: "প্রাকৃতিক সংখ্যা স্মার্ট নোট", 
+    teacher: "সালমা খাতুন",
+    description: "চিত্রসহ স্মার্ট নোট",
+    isFree: true, 
+    statsText: "৮.৮ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-numbers-quiz", 
+    topicId: "tp-6-math-numbers", 
+    type: "QUIZ", 
+    title: "প্রাকৃতিক সংখ্যা MCQ টেস্ট", 
+    teacher: "সালমা খাতুন",
+    description: "প্রাকৃতিক সংখ্যার অনুশীলনী প্রশ্ন",
+    isFree: true, 
+    statsText: "৫.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-numbers-model", 
+    topicId: "tp-6-math-numbers", 
+    type: "MODEL_TEST", 
+    title: "প্রাকৃতিক সংখ্যা মডেল টেস্ট", 
+    teacher: "সালমা খাতুন",
+    description: "পূর্ণাঙ্গ মডেল টেস্ট",
+    isFree: false, 
+    startsAt: in1h, 
+    statsText: "৭.৭ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-numbers-cq", 
+    topicId: "tp-6-math-numbers", 
+    type: "CQ_EXAM", 
+    title: "প্রাকৃতিক সংখ্যা CQ পরীক্ষা", 
+    teacher: "সালমা খাতুন",
+    description: "সৃজনশীল প্রশ্নাবলী",
+    isFree: false, 
+    statsText: "৬.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-numbers-live-exam", 
+    topicId: "tp-6-math-numbers", 
+    type: "LIVE_EXAM", 
+    title: "প্রাকৃতিক সংখ্যা লাইভ এক্সাম", 
+    teacher: "সালমা খাতুন",
+    description: "লাইভ পরীক্ষায় অংশগ্রহণ করুন",
+    isFree: false, 
+    startsAt: in2h, 
+    statsText: "৯.১ হাজার+" 
+  },
   
   // Class 6 SSC Q1 Science Contents
   { 
@@ -652,6 +749,103 @@ export const contents: Content[] = [
     isFree: true, 
     statsText: "১৩.৭ হাজার+" 
   },
+
+  // More Class 6 Science (Environment) to ensure 3-5 per group
+  { 
+    id: "cnt-6-science-environment-animated", 
+    topicId: "tp-6-science-environment", 
+    type: "ANIMATED_VIDEO", 
+    title: "জীবের বাসস্থান অ্যানিমেশন", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "বাসস্থান নিয়ে অ্যানিমেটেড ব্যাখ্যা",
+    isFree: true, 
+    durationSec: 420, 
+    statsText: "১২.৮ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-environment-story", 
+    topicId: "tp-6-science-environment", 
+    type: "STORY", 
+    title: "বাসস্থানের গল্প", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "বাসস্থান ও পরিবেশ নিয়ে শিক্ষামূলক গল্প",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৬.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-environment-guideline", 
+    topicId: "tp-6-science-environment", 
+    type: "GUIDELINE_VIDEO", 
+    title: "জীবের বাসস্থান শেখার গাইডলাইন", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "টপিকটি পড়ার কৌশল",
+    isFree: true, 
+    durationSec: 360, 
+    statsText: "৭.৩ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-environment-smart", 
+    topicId: "tp-6-science-environment", 
+    type: "SMART_NOTE", 
+    title: "জীবের বাসস্থান স্মার্ট নোট", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "চিত্রসহ স্মার্ট নোট",
+    isFree: false, 
+    statsText: "১১.৫ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-environment-class-note", 
+    topicId: "tp-6-science-environment", 
+    type: "CLASS_NOTE", 
+    title: "জীবের বাসস্থান ক্লাস নোট", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "ক্লাসের নোট সংকলন",
+    isFree: true, 
+    statsText: "৯.১ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-environment-quiz", 
+    topicId: "tp-6-science-environment", 
+    type: "QUIZ", 
+    title: "জীবের বাসস্থান MCQ টেস্ট", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "দ্রুত অনুশীলনী",
+    isFree: true, 
+    statsText: "৮.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-environment-model", 
+    topicId: "tp-6-science-environment", 
+    type: "MODEL_TEST", 
+    title: "জীবের বাসস্থান মডেল টেস্ট", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "সময় নির্ধারিত পরীক্ষা",
+    isFree: false, 
+    startsAt: in1h, 
+    statsText: "১০.২ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-environment-cq", 
+    topicId: "tp-6-science-environment", 
+    type: "CQ_EXAM", 
+    title: "জীবের বাসস্থান CQ পরীক্ষা", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "সৃজনশীল প্রশ্ন সমাধান",
+    isFree: false, 
+    statsText: "৭.৬ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-environment-live-exam", 
+    topicId: "tp-6-science-environment", 
+    type: "LIVE_EXAM", 
+    title: "জীবের বাসস্থান লাইভ এক্সাম", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "লাইভ পরীক্ষায় অংশগ্রহণ করুন",
+    isFree: false, 
+    startsAt: in2h, 
+    statsText: "১১.৮ হাজার+" 
+  },
   
   // Class 7 SSC Q1 Bangla Contents
   { 
@@ -685,6 +879,103 @@ export const contents: Content[] = [
     description: "বাংলা ব্যাকরণের বাক্য গঠন স্মার্ট নোট",
     isFree: false, 
     statsText: "১৪.৫ হাজার+" 
+  },
+
+  // More Class 7 Bangla (Grammar) to ensure 3-5 per group
+  { 
+    id: "cnt-7-bangla-grammar-animated", 
+    topicId: "tp-7-bangla-grammar", 
+    type: "ANIMATED_VIDEO", 
+    title: "বাক্য গঠন অ্যানিমেশন", 
+    teacher: "নাসির উদ্দিন",
+    description: "অ্যানিমেটেড ব্যাখ্যা ও উদাহরণ",
+    isFree: true, 
+    durationSec: 420, 
+    statsText: "১২.৭ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-grammar-story", 
+    topicId: "tp-7-bangla-grammar", 
+    type: "STORY", 
+    title: "বাক্য গঠনের গল্প", 
+    teacher: "নাসির উদ্দিন",
+    description: "মজার গল্পের মাধ্যমে শেখা",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৬.১ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-grammar-guideline", 
+    topicId: "tp-7-bangla-grammar", 
+    type: "GUIDELINE_VIDEO", 
+    title: "বাক্য গঠন শেখার গাইডলাইন", 
+    teacher: "নাসির উদ্দিন",
+    description: "দ্রুত শেখার টিপস",
+    isFree: true, 
+    durationSec: 360, 
+    statsText: "৭.৫ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-grammar-pdf", 
+    topicId: "tp-7-bangla-grammar", 
+    type: "PDF_NOTES", 
+    title: "বাক্য গঠন PDF নোট", 
+    teacher: "নাসির উদ্দিন",
+    description: "সংক্ষিপ্ত নোট ও উদাহরণ",
+    isFree: true, 
+    statsText: "৯.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-grammar-class-note", 
+    topicId: "tp-7-bangla-grammar", 
+    type: "CLASS_NOTE", 
+    title: "বাক্য গঠন ক্লাস নোট", 
+    teacher: "নাসির উদ্দিন",
+    description: "ক্লাসে ব্যবহৃত নোট",
+    isFree: true, 
+    statsText: "৮.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-grammar-quiz", 
+    topicId: "tp-7-bangla-grammar", 
+    type: "QUIZ", 
+    title: "বাক্য গঠন MCQ টেস্ট", 
+    teacher: "নাসির উদ্দিন",
+    description: "দ্রুত অনুশীলনী",
+    isFree: true, 
+    statsText: "৭.৩ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-grammar-model", 
+    topicId: "tp-7-bangla-grammar", 
+    type: "MODEL_TEST", 
+    title: "বাক্য গঠন মডেল টেস্ট", 
+    teacher: "নাসির উদ্দিন",
+    description: "সময় নির্ধারিত পরীক্ষা",
+    isFree: false, 
+    startsAt: in2h, 
+    statsText: "১০.৬ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-grammar-cq", 
+    topicId: "tp-7-bangla-grammar", 
+    type: "CQ_EXAM", 
+    title: "বাক্য গঠন CQ পরীক্ষা", 
+    teacher: "নাসির উদ্দিন",
+    description: "সৃজনশীল প্রশ্ন",
+    isFree: false, 
+    statsText: "৮.২ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-grammar-live-exam", 
+    topicId: "tp-7-bangla-grammar", 
+    type: "LIVE_EXAM", 
+    title: "বাক্য গঠন লাইভ এক্সাম", 
+    teacher: "নাসির উদ্দিন",
+    description: "লাইভ পরীক্ষায় অংশগ্রহণ করুন",
+    isFree: false, 
+    startsAt: in1h, 
+    statsText: "১১.২ হাজার+" 
   },
   
   // Class 7 SSC Q1 Math Contents
@@ -1107,6 +1398,41 @@ export const contents: Content[] = [
     statsText: "৯.৮ হাজার+" 
   },
   
+  // Additional premium Photosynthesis videos (to improve 30/70 mix)
+  { 
+    id: "cnt-7-science-photosynthesis-rec-advanced", 
+    topicId: "tp-7-science-photosynthesis", 
+    type: "RECORDED_CLASS", 
+    title: "আলোক সংশ্লেষণ — উন্নত ধারণা (Recorded)", 
+    teacher: "ড. ফারহানা ইয়াসমিন", 
+    description: "Calvin Cycle, Photorespiration এবং নিয়ন্ত্রণ প্রক্রিয়া", 
+    isFree: false, 
+    durationSec: 2400, 
+    statsText: "২৬.৩ হাজার+" 
+  }, 
+  { 
+    id: "cnt-7-science-photosynthesis-replay", 
+    topicId: "tp-7-science-photosynthesis", 
+    type: "LIVE_REPLAY", 
+    title: "আলোক সংশ্লেষণ লাইভ সেশন – রিপ্লে", 
+    teacher: "ড. ফারহানা ইয়াসমিন", 
+    description: "পূর্বের লাইভ ক্লাসের সম্পূর্ণ রিপ্লে", 
+    isFree: false, 
+    durationSec: 5400, 
+    statsText: "১৭.৯ হাজার+" 
+  }, 
+  { 
+    id: "cnt-7-science-photosynthesis-anim-pro", 
+    topicId: "tp-7-science-photosynthesis", 
+    type: "ANIMATED_VIDEO", 
+    title: "Photosynthesis Pro – Full Animation", 
+    teacher: "ড. ফারহানা ইয়াসমিন", 
+    description: "Complete pathway visualization with energy flow", 
+    isFree: false, 
+    durationSec: 720, 
+    statsText: "২১.১ হাজার+" 
+  }, 
+  
   // Class 7 Admission Biology Contents
   { 
     id: "cnt-7-admission-bio-intro-live", 
@@ -1150,6 +1476,103 @@ export const contents: Content[] = [
     isFree: false, 
     startsAt: ago1h, 
     statsText: "২.৭ হাজার+" 
+  },
+
+  // More Admission Biology (Intro) to ensure 3-5 per group
+  { 
+    id: "cnt-7-admission-bio-intro-animated", 
+    topicId: "tp-7-admission-bio-intro", 
+    type: "ANIMATED_VIDEO", 
+    title: "জীববিজ্ঞান পরিচিতি অ্যানিমেশন", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "অ্যানিমেটেড সংক্ষিপ্তসার",
+    isFree: false, 
+    durationSec: 480, 
+    statsText: "৫.১ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-intro-recorded-more", 
+    topicId: "tp-7-admission-bio-intro", 
+    type: "RECORDED_CLASS", 
+    title: "জীববিজ্ঞান পরিচিতি - রেকর্ডেড ক্লাস (Advanced)", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "উন্নত ধারণা সহ রেকর্ডেড লেকচার",
+    isFree: false, 
+    durationSec: 2700, 
+    statsText: "৬.৩ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-intro-story", 
+    topicId: "tp-7-admission-bio-intro", 
+    type: "STORY", 
+    title: "ভর্তি জীববিজ্ঞানের গল্প", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "মজার গল্পে মৌলিক ধারণা",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৩.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-intro-guideline", 
+    topicId: "tp-7-admission-bio-intro", 
+    type: "GUIDELINE_VIDEO", 
+    title: "ভর্তি জীববিজ্ঞান শেখার গাইডলাইন", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "স্টাডি প্ল্যান ও টিপস",
+    isFree: true, 
+    durationSec: 360, 
+    statsText: "৪.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-intro-pdf", 
+    topicId: "tp-7-admission-bio-intro", 
+    type: "PDF_NOTES", 
+    title: "ভর্তি জীববিজ্ঞান PDF নোট", 
+    teacher: "प्रফেসর ড. রহমান",
+    description: "সংক্ষিপ্ত PDF নোট",
+    isFree: false, 
+    statsText: "৪.৭ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-intro-smart", 
+    topicId: "tp-7-admission-bio-intro", 
+    type: "SMART_NOTE", 
+    title: "ভর্তি জীববিজ্ঞান স্মার্ট নোট", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "চিত্রসহ স্মার্ট নোট",
+    isFree: true, 
+    statsText: "৪.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-intro-quiz", 
+    topicId: "tp-7-admission-bio-intro", 
+    type: "QUIZ", 
+    title: "ভর্তি জীববিজ্ঞান MCQ টেস্ট", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "দ্রুত অনুশীলনী",
+    isFree: false, 
+    statsText: "৩.২ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-intro-cq", 
+    topicId: "tp-7-admission-bio-intro", 
+    type: "CQ_EXAM", 
+    title: "ভর্তি জীববিজ্ঞান CQ পরীক্ষা", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "সৃজনশীল প্রশ্ন",
+    isFree: false, 
+    statsText: "৩.৫ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-intro-live-exam", 
+    topicId: "tp-7-admission-bio-intro", 
+    type: "LIVE_EXAM", 
+    title: "ভর্তি জীববিজ্ঞান লাইভ এক্সাম", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "লাইভ পরীক্ষায় অংশগ্রহণ করুন",
+    isFree: false, 
+    startsAt: in2h, 
+    statsText: "৩.৭ হাজার+" 
   },
   
   // Class 7 Admission Biology Mitosis Contents
@@ -1195,6 +1618,737 @@ export const contents: Content[] = [
     isFree: false, 
     startsAt: in1h, 
     statsText: "৩.৪ হাজার+" 
+  },
+
+  // More Admission Biology (Mitosis) to ensure 3-5 per group
+  { 
+    id: "cnt-7-admission-bio-mitosis-recorded", 
+    topicId: "tp-7-admission-bio-mitosis", 
+    type: "RECORDED_CLASS", 
+    title: "মাইটোসিস - রেকর্ডেড ক্লাস", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "সম্পূর্ণ রেকর্ডেড লেকচার",
+    isFree: false, 
+    durationSec: 2400, 
+    statsText: "৫.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-mitosis-story", 
+    topicId: "tp-7-admission-bio-mitosis", 
+    type: "STORY", 
+    title: "মাইটোসিসের গল্প", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "গল্পের মাধ্যমে মাইটোসিস",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৩.১ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-mitosis-guideline", 
+    topicId: "tp-7-admission-bio-mitosis", 
+    type: "GUIDELINE_VIDEO", 
+    title: "মাইটোসিস শেখার গাইডলাইন", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "স্টাডি টিপস",
+    isFree: true, 
+    durationSec: 360, 
+    statsText: "৩.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-mitosis-pdf", 
+    topicId: "tp-7-admission-bio-mitosis", 
+    type: "PDF_NOTES", 
+    title: "মাইটোসিস PDF নোট", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "সংক্ষিপ্ত PDF নোট",
+    isFree: false, 
+    statsText: "৩.৮ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-mitosis-smart", 
+    topicId: "tp-7-admission-bio-mitosis", 
+    type: "SMART_NOTE", 
+    title: "মাইটোসিস স্মার্ট নোট", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "চিত্রসহ স্মার্ট নোট",
+    isFree: false, 
+    statsText: "৪.১ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-mitosis-class-note", 
+    topicId: "tp-7-admission-bio-mitosis", 
+    type: "CLASS_NOTE", 
+    title: "মাইটোসিস ক্লাস নোট", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "ক্লাসের নোট",
+    isFree: true, 
+    statsText: "৩.৬ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-mitosis-quiz", 
+    topicId: "tp-7-admission-bio-mitosis", 
+    type: "QUIZ", 
+    title: "মাইটোসিস MCQ টেস্ট", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "দ্রুত অনুশীলনী",
+    isFree: true, 
+    statsText: "৩.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-mitosis-model", 
+    topicId: "tp-7-admission-bio-mitosis", 
+    type: "MODEL_TEST", 
+    title: "মাইটোসিস মডেল টেস্ট", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "সময় নির্ধারিত পরীক্ষা",
+    isFree: false, 
+    startsAt: in2h, 
+    statsText: "৪.২ হাজার+" 
+  },
+  { 
+    id: "cnt-7-admission-bio-mitosis-live-exam", 
+    topicId: "tp-7-admission-bio-mitosis", 
+    type: "LIVE_EXAM", 
+    title: "মাইটোসিস লাইভ এক্সাম", 
+    teacher: "প্রফেসর ড. রহমান",
+    description: "লাইভ পরীক্ষায় অংশগ্রহণ করুন",
+    isFree: false, 
+    startsAt: in1h, 
+    statsText: "৪.৫ হাজার+" 
+  },
+
+  // ===== Class 6 Bangla Poetry =====
+  { 
+    id: "cnt-6-bangla-poetry-live", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "LIVE_CLASS", 
+    title: "কবিতা বিশ্লেষণ - লাইভ ক্লাস", 
+    teacher: "রফিক আহমেদ",
+    description: "কবিতার অলংকার ও ভাষার সৌন্দর্য বিশ্লেষণ",
+    isFree: true, 
+    startsAt: in2h, 
+    statsText: "৫.১ হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-recorded", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "RECORDED_CLASS", 
+    title: "কবিতা বিশ্লেষণ - রেকর্ডেড ক্লাস", 
+    teacher: "রফিক আহমেদ",
+    description: "কবিতার গঠন, ছন্দ ও অলংকারের বিস্তারিত পাঠ",
+    isFree: false, 
+    durationSec: 2100, 
+    statsText: "৮.৩ হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-animated", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "ANIMATED_VIDEO", 
+    title: "কবিতা বিশ্লেষণ অ্যানিমেশন", 
+    teacher: "রফিক আহমেদ",
+    description: "অ্যানিমেশনে কবিতার রূপক ও প্রতীক",
+    isFree: true, 
+    durationSec: 360, 
+    statsText: "৬.৭ হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-guideline", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "GUIDELINE_VIDEO", 
+    title: "কবিতা শেখার গাইডলাইন", 
+    teacher: "রফিক আহমেদ",
+    description: "কবিতা পড়ার কৌশল ও টিপস",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৫.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-story", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "STORY", 
+    title: "কবিতার গল্প", 
+    teacher: "রফিক আহমেদ",
+    description: "কবিতার উৎস ও ইতিহাস নিয়ে গল্প",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৫.৩ হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-smart", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "SMART_NOTE", 
+    title: "কবিতা বিশ্লেষণ স্মার্ট নোট", 
+    teacher: "রফিক আহমেদ",
+    description: "মূল পয়েন্ট ও সারাংশ",
+    isFree: false, 
+    statsText: "৯.১ হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-class-note", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "CLASS_NOTE", 
+    title: "কবিতা বিশ্লেষণ ক্লাস নোট", 
+    teacher: "রফিক আহমেদ",
+    description: "ক্লাস নোট সংকলন",
+    isFree: true, 
+    statsText: "৭.২ হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-pdf", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "PDF_NOTES", 
+    title: "কবিতা বিশ্লেষণ PDF নোট", 
+    teacher: "রফিক আহমেদ",
+    description: "ডাউনলোডযোগ্য PDF",
+    isFree: false, 
+    statsText: "৮.6 হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-quiz", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "QUIZ", 
+    title: "কবিতা MCQ টেস্ট", 
+    teacher: "রফিক আহমেদ",
+    description: "দ্রুত অনুশীলনী প্রশ্ন",
+    isFree: true, 
+    statsText: "৬.১ হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-model", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "MODEL_TEST", 
+    title: "কবিতা মডেল টেস্ট", 
+    teacher: "রফিক আহমেদ",
+    description: "সময় নির্ধারিত পরীক্ষা",
+    isFree: false, 
+    startsAt: in1h, 
+    statsText: "৬.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-cq", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "CQ_EXAM", 
+    title: "কবিতা CQ পরীক্ষা", 
+    teacher: "রফিক আহমেদ",
+    description: "সৃজনশীল প্রশ্ন",
+    isFree: false, 
+    statsText: "৫.৮ হাজার+" 
+  },
+  { 
+    id: "cnt-6-bangla-poetry-live-exam", 
+    topicId: "tp-6-bangla-poetry", 
+    type: "LIVE_EXAM", 
+    title: "কবিতা লাইভ এক্সাম", 
+    teacher: "রফিক আহমেদ",
+    description: "লাইভ পরীক্ষায় অংশগ্রহণ করুন",
+    isFree: false, 
+    startsAt: in2h, 
+    statsText: "৭.১ হাজার+" 
+  },
+
+  // ===== Class 6 Math Fractions =====
+  { 
+    id: "cnt-6-math-fractions-live", 
+    topicId: "tp-6-math-fractions", 
+    type: "LIVE_CLASS", 
+    title: "ভগ্নাংশের যোগ - লাইভ ক্লাস", 
+    teacher: "সালমা খাতুন",
+    description: "ভগ্নাংশের যোগ ও উদাহরণ",
+    isFree: true, 
+    startsAt: in1h, 
+    statsText: "৬.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-fractions-recorded", 
+    topicId: "tp-6-math-fractions", 
+    type: "RECORDED_CLASS", 
+    title: "ভগ্নাংশ - রেকর্ডেড ক্লাস", 
+    teacher: "সালমা খাতুন",
+    description: "ভগ্নাংশের ধারণা ও প্রয়োগ",
+    isFree: false, 
+    durationSec: 1800, 
+    statsText: "৯.৭ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-fractions-animated", 
+    topicId: "tp-6-math-fractions", 
+    type: "ANIMATED_VIDEO", 
+    title: "ভগ্নাংশ অ্যানিমেশন", 
+    teacher: "সালমা খাতুন",
+    description: "চিত্রসহ ব্যাখ্যা",
+    isFree: true, 
+    durationSec: 420, 
+    statsText: "১০.১ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-fractions-guideline", 
+    topicId: "tp-6-math-fractions", 
+    type: "GUIDELINE_VIDEO", 
+    title: "ভগ্নাংশ শেখার গাইডলাইন", 
+    teacher: "সালমা খাতুন",
+    description: "দ্রুত শেখার টিপস",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৭.৬ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-fractions-class-note", 
+    topicId: "tp-6-math-fractions", 
+    type: "CLASS_NOTE", 
+    title: "ভগ্নাংশ ক্লাস নোট", 
+    teacher: "সালমা খাতুন",
+    description: "ক্লাস নোট",
+    isFree: true, 
+    statsText: "৮.৩ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-fractions-smart", 
+    topicId: "tp-6-math-fractions", 
+    type: "SMART_NOTE", 
+    title: "ভগ্নাংশ স্মার্ট নোট", 
+    teacher: "সালমা খাতুন",
+    description: "সারসংক্ষেপ নোট",
+    isFree: false, 
+    statsText: "৮.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-fractions-pdf", 
+    topicId: "tp-6-math-fractions", 
+    type: "PDF_NOTES", 
+    title: "ভগ্নাংশ PDF নোট", 
+    teacher: "সালমা খাতুন",
+    description: "ডাউনলোডযোগ্য নোট",
+    isFree: false, 
+    statsText: "৯.৩ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-fractions-quiz", 
+    topicId: "tp-6-math-fractions", 
+    type: "QUIZ", 
+    title: "ভগ্নাংশ MCQ টেস্ট", 
+    teacher: "সালমা খাতুন",
+    description: "অনুশীলনী প্রশ্ন",
+    isFree: true, 
+    statsText: "৬.২ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-fractions-model", 
+    topicId: "tp-6-math-fractions", 
+    type: "MODEL_TEST", 
+    title: "ভগ্নাংশ মডেল টেস্ট", 
+    teacher: "সালমা খাতুন",
+    description: "সময় নির্ধারিত পরীক্ষা",
+    isFree: false, 
+    startsAt: in2h, 
+    statsText: "৭.১ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-fractions-cq", 
+    topicId: "tp-6-math-fractions", 
+    type: "CQ_EXAM", 
+    title: "ভগ্নাংশ CQ পরীক্ষা", 
+    teacher: "সালমা খাতুন",
+    description: "সৃজনশীল প্রশ্ন",
+    isFree: false, 
+    statsText: "৫.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-6-math-fractions-live-exam", 
+    topicId: "tp-6-math-fractions", 
+    type: "LIVE_EXAM", 
+    title: "ভগ্নাংশ লাইভ এক্সাম", 
+    teacher: "সালমা খাতুন",
+    description: "লাইভ পরীক্ষা",
+    isFree: false, 
+    startsAt: in1h, 
+    statsText: "৭.৯ হাজার+" 
+  },
+
+  // ===== Class 6 Science Matter =====
+  { 
+    id: "cnt-6-science-matter-live", 
+    topicId: "tp-6-science-matter", 
+    type: "LIVE_CLASS", 
+    title: "পদার্থের অবস্থা - লাইভ ক্লাস", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "ঘন, তরল, বায়বীয় অবস্থা",
+    isFree: true, 
+    startsAt: in2h, 
+    statsText: "৫.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-recorded", 
+    topicId: "tp-6-science-matter", 
+    type: "RECORDED_CLASS", 
+    title: "পদার্থের অবস্থা - রেকর্ডেড ক্লাস", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "অবস্থা পরিবর্তন ও উদাহরণ",
+    isFree: false, 
+    durationSec: 2000, 
+    statsText: "৮.৬ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-animated", 
+    topicId: "tp-6-science-matter", 
+    type: "ANIMATED_VIDEO", 
+    title: "পদার্থের অবস্থা অ্যানিমেশন", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "মলিকিউলার মডেল",
+    isFree: true, 
+    durationSec: 390, 
+    statsText: "৯.২ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-guideline", 
+    topicId: "tp-6-science-matter", 
+    type: "GUIDELINE_VIDEO", 
+    title: "পদার্থ শেখার গাইডলাইন", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "পড়ার কৌশল",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৬.৩ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-story", 
+    topicId: "tp-6-science-matter", 
+    type: "STORY", 
+    title: "পদার্থের গল্প", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "দৈনন্দিন উদাহরণে পদার্থ",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৫.৭ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-class-note", 
+    topicId: "tp-6-science-matter", 
+    type: "CLASS_NOTE", 
+    title: "পদার্থের অবস্থা ক্লাস নোট", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "ক্লাস নোট",
+    isFree: true, 
+    statsText: "৭.১ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-smart", 
+    topicId: "tp-6-science-matter", 
+    type: "SMART_NOTE", 
+    title: "পদার্থের অবস্থা স্মার্ট নোট", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "সারসংক্ষেপ",
+    isFree: false, 
+    statsText: "৮.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-pdf", 
+    topicId: "tp-6-science-matter", 
+    type: "PDF_NOTES", 
+    title: "পদার্থের অবস্থা PDF নোট", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "ডাউনলোডযোগ্য",
+    isFree: true, 
+    statsText: "৯.৫ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-quiz", 
+    topicId: "tp-6-science-matter", 
+    type: "QUIZ", 
+    title: "পদার্থের অবস্থা MCQ টেস্ট", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "অনুশীলনী",
+    isFree: true, 
+    statsText: "৬.৮ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-model", 
+    topicId: "tp-6-science-matter", 
+    type: "MODEL_TEST", 
+    title: "পদার্থের অবস্থা মডেল টেস্ট", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "সময় নির্ধারিত",
+    isFree: false, 
+    startsAt: in1h, 
+    statsText: "৭.৫ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-cq", 
+    topicId: "tp-6-science-matter", 
+    type: "CQ_EXAM", 
+    title: "পদার্থের অবস্থা CQ পরীক্ষা", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "সৃজনশীল প্রশ্ন",
+    isFree: false, 
+    statsText: "৬.১ হাজার+" 
+  },
+  { 
+    id: "cnt-6-science-matter-live-exam", 
+    topicId: "tp-6-science-matter", 
+    type: "LIVE_EXAM", 
+    title: "পদার্থের অবস্থা লাইভ এক্সাম", 
+    teacher: "ড. মাহমুদ হাসান",
+    description: "লাইভ পরীক্ষা",
+    isFree: false, 
+    startsAt: in2h, 
+    statsText: "৮.১ হাজার+" 
+  },
+
+  // ===== Class 7 Bangla Literature =====
+  { 
+    id: "cnt-7-bangla-literature-live", 
+    topicId: "tp-7-bangla-literature", 
+    type: "LIVE_CLASS", 
+    title: "সাহিত্যের প্রকার - লাইভ ক্লাস", 
+    teacher: "নাসির উদ্দিন",
+    description: "কবিতা, গল্প, উপন্যাসের প্রকারভেদ",
+    isFree: true, 
+    startsAt: in1h, 
+    statsText: "৫.৬ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-recorded", 
+    topicId: "tp-7-bangla-literature", 
+    type: "RECORDED_CLASS", 
+    title: "সাহিত্য - রেকর্ডেড ক্লাস", 
+    teacher: "নাসির উদ্দিন",
+    description: "সাহিত্যের রীতি ও ধারার পাঠ",
+    isFree: false, 
+    durationSec: 2400, 
+    statsText: "৯.২ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-animated", 
+    topicId: "tp-7-bangla-literature", 
+    type: "ANIMATED_VIDEO", 
+    title: "সাহিত্য অ্যানিমেশন", 
+    teacher: "নাসির উদ্দিন",
+    description: "চিত্রসহ ব্যাখ্যা",
+    isFree: true, 
+    durationSec: 360, 
+    statsText: "৭.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-guideline", 
+    topicId: "tp-7-bangla-literature", 
+    type: "GUIDELINE_VIDEO", 
+    title: "সাহিত্য শেখার গাইডলাইন", 
+    teacher: "নাসির উদ্দিন",
+    description: "দ্রুত শেখার টিপস",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৬.৩ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-story", 
+    topicId: "tp-7-bangla-literature", 
+    type: "STORY", 
+    title: "সাহিত্যের গল্প", 
+    teacher: "নাসির উদ্দিন",
+    description: "সাহিত্যের ধারার গল্প",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৫.১ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-class-note", 
+    topicId: "tp-7-bangla-literature", 
+    type: "CLASS_NOTE", 
+    title: "সাহিত্য ক্লাস নোট", 
+    teacher: "নাসির উদ্দিন",
+    description: "ক্লাস নোট",
+    isFree: true, 
+    statsText: "৮.১ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-smart", 
+    topicId: "tp-7-bangla-literature", 
+    type: "SMART_NOTE", 
+    title: "সাহিত্য স্মার্ট নোট", 
+    teacher: "নাসির উদ্দিন",
+    description: "সারসংক্ষেপ",
+    isFree: false, 
+    statsText: "৮.৮ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-pdf", 
+    topicId: "tp-7-bangla-literature", 
+    type: "PDF_NOTES", 
+    title: "সাহিত্য PDF নোট", 
+    teacher: "নাসির উদ্দিন",
+    description: "ডাউনলোডযোগ্য",
+    isFree: true, 
+    statsText: "৯.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-quiz", 
+    topicId: "tp-7-bangla-literature", 
+    type: "QUIZ", 
+    title: "সাহিত্য MCQ টেস্ট", 
+    teacher: "নাসির উদ্দিন",
+    description: "অনুশীলনী",
+    isFree: true, 
+    statsText: "৬.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-model", 
+    topicId: "tp-7-bangla-literature", 
+    type: "MODEL_TEST", 
+    title: "সাহিত্য মডেল টেস্ট", 
+    teacher: "নাসির উদ্দিন",
+    description: "সময় নির্ধারিত",
+    isFree: false, 
+    startsAt: in2h, 
+    statsText: "৭.৭ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-cq", 
+    topicId: "tp-7-bangla-literature", 
+    type: "CQ_EXAM", 
+    title: "সাহিত্য CQ পরীক্ষা", 
+    teacher: "নাসির উদ্দিন",
+    description: "সৃজনশীল প্রশ্ন",
+    isFree: false, 
+    statsText: "৭.১ হাজার+" 
+  },
+  { 
+    id: "cnt-7-bangla-literature-live-exam", 
+    topicId: "tp-7-bangla-literature", 
+    type: "LIVE_EXAM", 
+    title: "সাহিত্য লাইভ এক্সাম", 
+    teacher: "নাসির উদ্দিন",
+    description: "লাইভ পরীক্ষা",
+    isFree: false, 
+    startsAt: in1h, 
+    statsText: "৮.০ হাজার+" 
+  },
+
+  // ===== Class 7 Math Equation =====
+  { 
+    id: "cnt-7-math-equation-live", 
+    topicId: "tp-7-math-equation", 
+    type: "LIVE_CLASS", 
+    title: "রৈখিক সমীকরণ - লাইভ ক্লাস", 
+    teacher: "রোকসানা পারভীন",
+    description: "সমীকরণ সমাধানের কৌশল",
+    isFree: true, 
+    startsAt: in1h, 
+    statsText: "৬.২ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-recorded", 
+    topicId: "tp-7-math-equation", 
+    type: "RECORDED_CLASS", 
+    title: "রৈখিক সমীকরণ - রেকর্ডেড ক্লাস", 
+    teacher: "রোকসানা পারভীন",
+    description: "ধাপে ধাপে সমাধান",
+    isFree: false, 
+    durationSec: 2100, 
+    statsText: "১০.১ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-animated", 
+    topicId: "tp-7-math-equation", 
+    type: "ANIMATED_VIDEO", 
+    title: "রৈখিক সমীকরণ অ্যানিমেশন", 
+    teacher: "রোকসানা পারভীন",
+    description: "চিত্রসহ ব্যাখ্যা",
+    isFree: true, 
+    durationSec: 420, 
+    statsText: "৯.৮ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-guideline", 
+    topicId: "tp-7-math-equation", 
+    type: "GUIDELINE_VIDEO", 
+    title: "সমীকরণ শেখার গাইডলাইন", 
+    teacher: "রোকসানা পারভীন",
+    description: "দ্রুত শেখার টিপস",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৭.৪ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-story", 
+    topicId: "tp-7-math-equation", 
+    type: "STORY", 
+    title: "সমীকরণের গল্প", 
+    teacher: "রোকসানা পারভীন",
+    description: "দৈনন্দিন জীবনে সমীকরণ",
+    isFree: true, 
+    durationSec: 300, 
+    statsText: "৬.০ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-class-note", 
+    topicId: "tp-7-math-equation", 
+    type: "CLASS_NOTE", 
+    title: "রৈখিক সমীকরণ ক্লাস নোট", 
+    teacher: "রোকসানা পারভীন",
+    description: "ক্লাস নোট",
+    isFree: true, 
+    statsText: "৮.৩ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-smart", 
+    topicId: "tp-7-math-equation", 
+    type: "SMART_NOTE", 
+    title: "রৈখিক সমীকরণ স্মার্ট নোট", 
+    teacher: "রোকসানা পারভীন",
+    description: "সারসংক্ষেপ",
+    isFree: false, 
+    statsText: "৮.৯ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-pdf", 
+    topicId: "tp-7-math-equation", 
+    type: "PDF_NOTES", 
+    title: "রৈখিক সমীকরণ PDF নোট", 
+    teacher: "রোকসানা পারভীন",
+    description: "ডাউনলোডযোগ্য",
+    isFree: true, 
+    statsText: "৯.৭ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-quiz", 
+    topicId: "tp-7-math-equation", 
+    type: "QUIZ", 
+    title: "রৈখিক সমীকরণ MCQ টেস্ট", 
+    teacher: "রোকসানা পারভীন",
+    description: "অনুশীলনী",
+    isFree: true, 
+    statsText: "৬.৬ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-model", 
+    topicId: "tp-7-math-equation", 
+    type: "MODEL_TEST", 
+    title: "রৈখিক সমীকরণ মডেল টেস্ট", 
+    teacher: "রোকসানা পারভীন",
+    description: "সময় নির্ধারিত",
+    isFree: false, 
+    startsAt: in2h, 
+    statsText: "৭.৮ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-cq", 
+    topicId: "tp-7-math-equation", 
+    type: "CQ_EXAM", 
+    title: "রৈখিক সমীকরণ CQ পরীক্ষা", 
+    teacher: "রোকসানা পারভীন",
+    description: "সৃজনশীল প্রশ্ন",
+    isFree: false, 
+    statsText: "৭.০ হাজার+" 
+  },
+  { 
+    id: "cnt-7-math-equation-live-exam", 
+    topicId: "tp-7-math-equation", 
+    type: "LIVE_EXAM", 
+    title: "রৈখিক সমীকরণ লাইভ এক্সাম", 
+    teacher: "রোকসানা পারভীন",
+    description: "লাইভ পরীক্ষা",
+    isFree: false, 
+    startsAt: in1h, 
+    statsText: "৮.৫ হাজার+" 
   },
 ];
 

@@ -5,7 +5,7 @@ import { catalog } from "@/lib/search/mockData"
 import { searchAll } from "@/lib/search/score"
 import { Content, MixedResult } from "@/lib/search/types"
 import { SubjectCard } from "@/components/search/cards/SubjectCard"
-import { tokenize } from "@/lib/search/normalize"
+import { tokenize, transliterateBnToLatin, highlight, normalize } from "@/lib/search/normalize"
 import { CONTENT_TYPE_GROUPS } from "@/lib/search/config"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
@@ -14,6 +14,76 @@ type SectionData = {
   title: string
   emoji: string
   items: Content[]
+}
+
+// Human-friendly label for content types used in debug UI
+function contentTypeLabel(t: Content["type"]): string {
+  switch (t) {
+    case "LIVE_CLASS": return "লাইভ ক্লাস"
+    case "LIVE_REPLAY": return "লাইভ রিপ্লে"
+    case "LIVE_EXAM": return "লাইভ এক্সাম"
+    case "MODEL_TEST": return "মডেল টেস্ট"
+    case "CQ_EXAM": return "CQ এক্সাম"
+    case "ANIMATED_VIDEO": return "ভিডিও লেসন"
+    case "RECORDED_CLASS": return "রেকর্ডেড ক্লাস"
+    case "STORY": return "স্টোরি"
+    case "GUIDELINE_VIDEO": return "গাইডলাইন ভিডিও"
+    case "PDF_NOTES": return "PDF নোট"
+    case "SMART_NOTE": return "স্মার্ট নোট"
+    case "CLASS_NOTE": return "ক্লাস নোট"
+    case "ADMISSION_NOTE": return "ভর্তি নোট"
+    case "QUIZ": return "কুইজ"
+    case "HOMEWORK": return "হোমওয়ার্ক"
+    default: return String(t).replace(/_/g, " ")
+  }
+}
+
+// Pick N items prioritizing a 1 free : 3 premium mix (for N=4).
+// If no free exists, fill all with premium.
+function selectTopNWithOneFreeThreePremium(items: Content[], n: number = 4): Content[] {
+  if (n <= 0 || items.length === 0) return []
+  const freeItems = items.filter(i => i.isFree)
+  const premiumItems = items.filter(i => !i.isFree)
+
+  const result: Content[] = []
+  const used = new Set<string>()
+
+  // Prefer exactly one free if available
+  if (freeItems.length > 0) {
+    result.push(freeItems[0])
+    used.add(freeItems[0].id)
+  }
+
+  // Add up to 3 premium
+  for (const p of premiumItems) {
+    if (result.length >= (freeItems.length > 0 ? 1 + 3 : n)) break
+    if (!used.has(p.id)) {
+      result.push(p)
+      used.add(p.id)
+    }
+  }
+
+  // If no free available, we need n premium (or as many as exist)
+  if (freeItems.length === 0) {
+    for (const p of premiumItems) {
+      if (result.length >= n) break
+      if (!used.has(p.id)) {
+        result.push(p)
+        used.add(p.id)
+      }
+    }
+  }
+
+  // If still short (e.g., not enough premium), fill from remaining items by original order
+  for (const it of items) {
+    if (result.length >= n) break
+    if (!used.has(it.id)) {
+      result.push(it)
+      used.add(it.id)
+    }
+  }
+
+  return result.slice(0, n)
 }
 
 function ResultCard({ item, premium = false }: { item: Content; premium?: boolean }) {
@@ -47,6 +117,8 @@ function ResultCard({ item, premium = false }: { item: Content; premium?: boolea
     const s = sec % 60
     return s ? `${m}m ${s}s` : `${m}m`
   }
+
+  const getTypeLabel = (t: Content["type"]): string => contentTypeLabel(t)
 
   const getCtaLabel = (type: Content["type"]) => {
     switch (type) {
@@ -135,15 +207,19 @@ function ResultCard({ item, premium = false }: { item: Content; premium?: boolea
 function Section({ 
   section, 
   showAll = false,
-  onSeeAll 
+  onSeeAll,
+  enforceRatio = false,
 }: { 
   section: SectionData; 
   showAll?: boolean;
   onSeeAll?: () => void;
+  enforceRatio?: boolean;
 }) {
   if (section.items.length === 0) return null
 
-  const displayItems = showAll ? section.items : section.items.slice(0, 4)
+  const displayItems = showAll 
+    ? section.items 
+    : (enforceRatio ? selectTopNWithOneFreeThreePremium(section.items, 4) : section.items.slice(0, 4))
   const showSeeAll = section.items.length > 4 && !showAll
 
   return (
@@ -177,7 +253,7 @@ export default function FreeResultsPage() {
   const [activeTab, setActiveTab] = useState('All')
   const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set())
 
-  const filterTabs = ['All', 'Videos', 'Notes', 'Tests', 'Class', 'Program', 'Subject', 'Chapter', 'Topic']
+  const filterTabs = ['All', 'Videos', 'Notes', 'Tests', 'Program', 'Subject']
 
   // Search using the enhanced search logic
   const searchResults = useMemo(() => {
@@ -197,11 +273,63 @@ export default function FreeResultsPage() {
   const contentResults = results.filter(r => r.kind === "CONTENT").map(r => r.item as Content)
 
   // Group all content by type (free and premium mixed together)
-  const videos = contentResults.filter(c => (CONTENT_TYPE_GROUPS.videos as readonly string[]).includes(c.type))
-  const notes = contentResults.filter(c => (CONTENT_TYPE_GROUPS.notes as readonly string[]).includes(c.type))
-  const tests = contentResults.filter(c => (CONTENT_TYPE_GROUPS.tests as readonly string[]).includes(c.type))
+  const videosAll = contentResults.filter(c => (CONTENT_TYPE_GROUPS.videos as readonly string[]).includes(c.type))
+  const notesAll = contentResults.filter(c => (CONTENT_TYPE_GROUPS.notes as readonly string[]).includes(c.type))
+  const testsAll = contentResults.filter(c => (CONTENT_TYPE_GROUPS.tests as readonly string[]).includes(c.type))
 
 
+
+  // Helper: for display (All tab), pick exactly 4 with 1 free + 3 premium if possible
+  function selectTopNWithOneFreeThreePremium(items: Content[], n: number = 4): Content[] {
+    if (n <= 0 || items.length === 0) return []
+    const freeItems = items.filter(i => i.isFree)
+    const premiumItems = items.filter(i => !i.isFree)
+
+    const result: Content[] = []
+    const used = new Set<string>()
+
+    // Prefer exactly one free if available
+    if (freeItems.length > 0) {
+      result.push(freeItems[0])
+      used.add(freeItems[0].id)
+    }
+
+    // Add up to 3 premium
+    for (const p of premiumItems) {
+      if (result.length >= (freeItems.length > 0 ? 1 + 3 : n)) break
+      if (!used.has(p.id)) {
+        result.push(p)
+        used.add(p.id)
+      }
+    }
+
+    // If no free available, we need n premium (or as many as exist)
+    if (freeItems.length === 0) {
+      for (const p of premiumItems) {
+        if (result.length >= n) break
+        if (!used.has(p.id)) {
+          result.push(p)
+          used.add(p.id)
+        }
+      }
+    }
+
+    // If still short (e.g., not enough premium), fill from remaining items by original order
+      for (const it of items) {
+      if (result.length >= n) break
+      if (!used.has(it.id)) {
+        result.push(it)
+        used.add(it.id)
+      }
+    }
+
+    return result.slice(0, n)
+  }
+
+  // Use ranking order; ratio is enforced only for the top 4 display items in All tab
+  const videos = videosAll
+  const notes = notesAll
+  const tests = testsAll
 
   // Create sections with dynamic ordering based on intent (content already sorted by search ranking)
   const createSections = () => {
@@ -362,11 +490,8 @@ export default function FreeResultsPage() {
       {/* Content Area */}
       <div className="px-4 py-6 space-y-6">
         {/* Hierarchy Results */}
-        {(activeTab === 'All' || activeTab === 'Class') && renderHierarchyResults(classResults, 'Classes', '🏫')}
         {(activeTab === 'All' || activeTab === 'Program') && renderHierarchyResults(programResults, 'Programs', '📚')}
         {(activeTab === 'All' || activeTab === 'Subject') && renderHierarchyResults(subjectResults, 'Subjects', '📖')}
-        {(activeTab === 'All' || activeTab === 'Chapter') && renderHierarchyResults(chapterResults, 'Chapters', '📄')}
-        {(activeTab === 'All' || activeTab === 'Topic') && renderHierarchyResults(topicResults, 'Topics', '🔍')}
 
         {/* Content Sections */}
         {(activeTab === 'All' || activeTab === 'Videos' || activeTab === 'Notes' || activeTab === 'Tests') && (
@@ -377,6 +502,7 @@ export default function FreeResultsPage() {
                 section={section}
                 showAll={expandedSections.has(`section-${idx}`)}
                 onSeeAll={() => handleSeeAll(`section-${idx}`)}
+                enforceRatio={activeTab === 'All'}
               />
           ))}
         </section>
@@ -406,14 +532,14 @@ export default function FreeResultsPage() {
             See Logic
           </button>
         </DialogTrigger>
-        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto bg-gradient-to-br from-slate-50 to-slate-100">
+        <DialogContent className="!max-w-5xl !sm:max-w-5xl w-full max-h-[90vh] overflow-y-auto overflow-x-hidden bg-gradient-to-br from-slate-50 to-slate-100">
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+            <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent break-words">
               🔍 Search Algorithm Breakdown
             </DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-6 py-4">
+          <div className="space-y-6 py-4 overflow-x-hidden">
             {/* Query Info */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
               <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
@@ -530,117 +656,172 @@ export default function FreeResultsPage() {
             <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
               <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                 <span className="text-2xl">🔗</span>
-                Step 3: Content Matching
+                Step 3: Document-Level Match Type Analysis
               </h3>
               <div className="space-y-3 text-sm">
                 <div className="p-4 bg-blue-50 rounded-lg border-l-4 border-blue-500">
-                  <p className="font-semibold text-blue-900 mb-2">What is "Searchable Context"?</p>
+                  <p className="font-semibold text-blue-900 mb-2">How Match Type Scoring Works:</p>
                   <p className="text-blue-800 mb-2">
-                    For each piece of content, we create a combined text string that includes:
+                    A document is basically a content's all fields: Program name, Phase, Subject, Chapter, Topic, Content Title, Description, Teacher.
+                  </p>
+                  <p className="text-blue-800 mb-2">
+                    We analyze the ENTIRE document (all fields combined) and count how many times the query appears in each match type:
                   </p>
                   <div className="bg-white rounded p-3 space-y-1 text-blue-900">
-                    <div>📌 <strong>Content Title</strong> - The actual name of the video/note/test</div>
-                    <div>📚 <strong>Topic Name</strong> - The specific topic (e.g., "Photosynthesis")</div>
-                    <div>📖 <strong>Chapter Name</strong> - The chapter it belongs to (e.g., "Plant Biology")</div>
-                    <div>🎓 <strong>Subject Name</strong> - The subject (e.g., "Biology")</div>
+                    <div>📝 <strong>All Fields Combined:</strong> Program name, Phase, Subject, Chapter, Topic, Content Title, Description, Teacher</div>
+                    <div>🔍 <strong>Count Occurrences:</strong> How many times "photosynthesis" appears across all fields</div>
+                    <div>🎯 <strong>By Match Type:</strong> Exact phrase, direct token, synonym, partial, fuzzy</div>
+                    <div>📊 <strong>Calculate Score:</strong> occurrences × boost value for each match type</div>
                   </div>
                   <p className="text-blue-800 mt-2">
-                    This allows matching not just the title, but also the broader academic context!
+                    Example: Query "photosynthesis" in document with "Photosynthesis Pro - Full Animation" + Bengali "আলোকসংশ্লেষণ":
+                    <br/>
+                    • Direct token "photosynthesis": 1 occurrence × 8.0 = 8.0
+                    <br/>
+                    • Bengali translation "আলোকসংশ্লেষণ": 1 occurrence × 5.0 = 5.0
+                    <br/>
+                    • "Pro" is NOT counted (not part of query)
+                    <br/>
+                    Total: 8.0 + 5.0 = 13.0
                   </p>
-                </div>
-                
-                <div className="p-4 bg-orange-50 rounded-lg border-l-4 border-orange-500">
-                  <p className="font-semibold text-orange-900 mb-2">Matching Strategy:</p>
-                  <ul className="list-disc list-inside space-y-1 text-orange-800">
-                    <li><strong>Exact Title Match:</strong> Token appears in content title (Weight: 10)</li>
-                    <li><strong>Searchable Context Match:</strong> Token in topic/chapter/subject (Weight: 8)</li>
-                    <li><strong>Partial Match:</strong> Token partially matches words (Weight: 6)</li>
-                    <li><strong>Fuzzy Match:</strong> Similar words with typo tolerance (Weight: 3)</li>
-                  </ul>
-                </div>
-                <div className="p-4 bg-yellow-50 rounded-lg">
-                  <p className="font-semibold text-yellow-900 mb-2">Minimum Match Threshold:</p>
-                  <p className="text-yellow-800">Content must match at least 30% of query tokens to be included in results</p>
                 </div>
               </div>
             </div>
 
-            {/* Step 4: Scoring & Ranking */}
+            {/* Step 4: Match Type Scoring (Base Score) */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
               <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                 <span className="text-2xl">📊</span>
-                Step 4: Scoring & Ranking
+                Step 4: Base Score = Match Type Scoring
               </h3>
               <div className="space-y-3 text-sm">
                 <div className="p-4 bg-indigo-50 rounded-lg border-l-4 border-indigo-500">
-                  <p className="font-semibold text-indigo-900 mb-3">Scoring Components:</p>
+                  <p className="font-semibold text-indigo-900 mb-2">Match Type = Base Score</p>
+                  <p className="text-indigo-800 mb-3 text-xs">
+                    The base score IS the match type scoring. Count occurrences across all document fields and multiply by boost values.
+                  </p>
                   <div className="space-y-2">
                     <div className="flex justify-between items-center p-2 bg-white rounded">
-                      <span className="text-indigo-800">Base Match Score</span>
-                      <span className="font-mono font-bold text-indigo-600">0-100</span>
+                      <span className="text-indigo-800">🎯 Exact Phrase Match</span>
+                      <span className="font-mono font-bold text-indigo-600">occurrences × 10.0</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-white rounded">
-                      <span className="text-indigo-800">Free Content Boost</span>
-                      <span className="font-mono font-bold text-green-600">+5</span>
+                      <span className="text-indigo-800">✅ Direct Full-Token Match</span>
+                      <span className="font-mono font-bold text-blue-600">occurrences × 8.0</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-white rounded">
-                      <span className="text-indigo-800">Content Type Boost (Live Class)</span>
-                      <span className="font-mono font-bold text-blue-600">+3</span>
+                      <span className="text-indigo-800">🔄 Synonym/Translation Match</span>
+                      <span className="font-mono font-bold text-purple-600">occurrences × 5.0</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-white rounded">
-                      <span className="text-indigo-800">Content Type Boost (Recorded/Smart Note)</span>
-                      <span className="font-mono font-bold text-blue-600">+2</span>
+                      <span className="text-indigo-800">🔤 Partial/Prefix Match</span>
+                      <span className="font-mono font-bold text-green-600">occurrences × 3.0</span>
                     </div>
                     <div className="flex justify-between items-center p-2 bg-white rounded">
-                      <span className="text-indigo-800">Recency Boost (Recent content)</span>
-                      <span className="font-mono font-bold text-purple-600">+2</span>
+                      <span className="text-indigo-800">⚡ Fuzzy/Typo Match</span>
+                      <span className="font-mono font-bold text-orange-600">occurrences × 1.0</span>
                     </div>
                   </div>
                 </div>
-                <div className="p-4 bg-green-50 rounded-lg">
-                  <p className="font-semibold text-green-900 mb-2">Final Ranking:</p>
-                  <p className="text-green-800">Results are sorted by total score (highest first), then by:</p>
-                  <ol className="list-decimal list-inside mt-2 space-y-1 text-green-800 ml-2">
-                    <li>Free content appears before premium content</li>
-                    <li>Content type priority (Live {'>'} Recorded {'>'} Animated)</li>
-                    <li>Recency (newer content ranked higher)</li>
-                    <li>Popularity (views count as tie-breaker)</li>
-                  </ol>
+                
+                <div className="p-4 bg-red-50 rounded-lg border-l-4 border-red-500">
+                  <p className="font-semibold text-red-900 mb-3">Intent Detection & Boosting:</p>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center p-2 bg-white rounded">
+                      <span className="text-red-800">🎯 Intent Detected (Notes/Tests/Videos)</span>
+                      <span className="font-mono font-bold text-red-600">boost: 100.0</span>
+                    </div>
+                    <div className="flex justify-between items-center p-2 bg-white rounded">
+                      <span className="text-red-800">📊 Default Content Type Boost</span>
+                      <span className="font-mono font-bold text-orange-600">Videos {'>'} Notes {'>'} Tests</span>
+                    </div>
+                    <div className="text-xs text-red-700 mt-2">
+                      If query contains intent keywords (e.g., "notes", "test", "video"), matching content_types get massive boost. Otherwise, apply default content_type ordering.
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-green-50 rounded-lg border-l-4 border-green-500">
+                  <p className="font-semibold text-green-900 mb-3">Hard Filters:</p>
+                  <div className="space-y-2">
+                    <div className="flex justify-between items-center p-2 bg-white rounded">
+                      <span className="text-green-800">🏫 Class Filter</span>
+                      <span className="font-mono font-bold text-green-600">Must Match User's Class</span>
+                    </div>
+                    <div className="text-xs text-green-700 mt-2">
+                      All queries include filter clause: <code className="bg-gray-100 px-1 rounded">term: &#123; "class_name.keyword": "Class 6" &#125;</code>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <p className="font-semibold text-blue-900 mb-2">Query Structure:</p>
+                  <div className="bg-slate-800 text-green-400 p-4 rounded font-mono text-xs overflow-x-auto break-words">
+                    <pre>{`bool: {
+  should: [
+    match_phrase: { boost: 10.0 },
+    match (operator: and): { boost: 8.0 },
+    match_bool_prefix: { boost: 3.0 },
+    match (fuzzy): { boost: 1.0 }
+  ],
+  filter: [
+    { term: { "class_name.keyword": "Class 6" } }
+  ]
+}`}</pre>
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Step 5: Grouping & Display */}
+            {/* Step 5: Flat Response & Frontend Grouping */}
             <div className="bg-white rounded-xl p-6 shadow-sm border border-slate-200">
               <h3 className="font-bold text-lg mb-4 flex items-center gap-2">
                 <span className="text-2xl">📦</span>
-                Step 5: Grouping & Display
+                Step 5: API Response & Frontend Grouping
               </h3>
               <div className="space-y-3 text-sm">
                 <div className="p-4 bg-pink-50 rounded-lg border-l-4 border-pink-500">
-                  <p className="font-semibold text-pink-900 mb-2">Content Grouping:</p>
+                  <p className="font-semibold text-pink-900 mb-2">Elasticsearch Returns Flat List:</p>
+                  <div className="bg-slate-800 text-green-400 p-4 rounded font-mono text-xs mt-3">
+                    <pre>{`Response from Elasticsearch:
+[
+  { id: "1", title: "Video 1", content_type: "ANIMATED_VIDEO", ... },
+  { id: "2", title: "Note 1", content_type: "SMART_NOTE", ... },
+  { id: "3", title: "Video 2", content_type: "RECORDED_CLASS", ... },
+  ...
+]
+// Pre-sorted by relevance score (highest first)
+// No grouping, no sections
+// Just a ranked, flat list`}</pre>
+                  </div>
+                </div>
+                
+                <div className="p-4 bg-blue-50 rounded-lg">
+                  <p className="font-semibold text-blue-900 mb-2">Frontend Grouping (Not Backend):</p>
+                  <p className="text-blue-800 mb-2">Frontend receives the flat list and groups it into sections:</p>
                   <div className="grid grid-cols-3 gap-3 mt-3">
                     <div className="p-3 bg-white rounded-lg text-center">
                       <p className="text-2xl mb-1">🎥</p>
-                      <p className="font-bold text-pink-700">Videos</p>
+                      <p className="font-bold text-blue-700">Videos</p>
                       <p className="text-xs text-slate-600 mt-1">{videos.length} items</p>
                     </div>
                     <div className="p-3 bg-white rounded-lg text-center">
                       <p className="text-2xl mb-1">📄</p>
-                      <p className="font-bold text-pink-700">Notes & PDFs</p>
+                      <p className="font-bold text-blue-700">Notes & PDFs</p>
                       <p className="text-xs text-slate-600 mt-1">{notes.length} items</p>
                     </div>
                     <div className="p-3 bg-white rounded-lg text-center">
                       <p className="text-2xl mb-1">🧪</p>
-                      <p className="font-bold text-pink-700">Tests</p>
+                      <p className="font-bold text-blue-700">Tests</p>
                       <p className="text-xs text-slate-600 mt-1">{tests.length} items</p>
                     </div>
                   </div>
                 </div>
-                <div className="p-4 bg-blue-50 rounded-lg">
-                  <p className="font-semibold text-blue-900 mb-2">Dynamic Section Ordering:</p>
-                  <p className="text-blue-800">Section order changes based on detected intent:</p>
-                  <ul className="list-disc list-inside mt-2 space-y-1 text-blue-800 ml-2">
+
+                <div className="p-4 bg-green-50 rounded-lg">
+                  <p className="font-semibold text-green-900 mb-2">Dynamic Section Ordering (Frontend):</p>
+                  <p className="text-green-800">Frontend reorders sections based on detected intent:</p>
+                  <ul className="list-disc list-inside mt-2 space-y-1 text-green-800 ml-2">
                     <li>If query contains "notes/pdf" → Notes section appears first</li>
                     <li>If query contains "test/exam" → Tests section appears first</li>
                     <li>Default order: Videos → Notes → Tests</li>
@@ -656,6 +837,14 @@ export default function FreeResultsPage() {
                 Individual Content Scores & Ranking
               </h3>
               <div className="space-y-3 text-sm">
+                <div className="p-4 bg-yellow-50 rounded-lg mb-4 border-l-4 border-yellow-500">
+                  <p className="text-yellow-900 font-medium mb-2">
+                    ⚠️ Note: Currently showing mock search results (pre-Elasticsearch implementation)
+                  </p>
+                  <p className="text-yellow-800 text-xs">
+                    Once Elasticsearch is integrated with the Match Type Scoring model, this will show the actual Elasticsearch relevance scores instead of mock scoring.
+                  </p>
+                </div>
                 <div className="p-4 bg-slate-50 rounded-lg mb-4">
                   <p className="text-slate-700 font-medium">
                     Below are all content items sorted by their final score. Each item shows how it was scored and why it ranked where it did.
@@ -663,7 +852,7 @@ export default function FreeResultsPage() {
                 </div>
                 
                 {/* Content Results with Scores */}
-                <div className="space-y-3 max-h-[500px] overflow-y-auto pr-2">
+                <div className="space-y-3 max-h-[500px] overflow-y-auto overflow-x-hidden pr-2">
                   {results
                     .filter(r => r.kind === "CONTENT")
                     .map((result, index) => {
@@ -673,140 +862,181 @@ export default function FreeResultsPage() {
                       const chapter = topic ? catalog.chapters.find(c => c.id === topic.chapterId) : undefined
                       
                       return (
-                        <div key={content.id} className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg p-4 border border-slate-200">
+                        <div key={content.id} className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-lg p-4 border border-slate-200 overflow-hidden">
                           {/* Rank Badge */}
-                          <div className="flex items-start gap-3 mb-3">
-                            <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
-                              index === 0 ? 'bg-yellow-400 text-yellow-900' :
-                              index === 1 ? 'bg-gray-300 text-gray-900' :
-                              index === 2 ? 'bg-orange-400 text-orange-900' :
-                              'bg-slate-200 text-slate-700'
-                            }`}>
-                              #{index + 1}
+                          <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm ${
+                            index === 0 ? 'bg-yellow-400 text-yellow-900' :
+                            index === 1 ? 'bg-gray-300 text-gray-900' :
+                            index === 2 ? 'bg-orange-400 text-orange-900' :
+                            'bg-slate-200 text-slate-700'
+                          }`}>
+                            #{index + 1}
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="flex items-start justify-between gap-2 mb-2">
+                              <div className="flex-1 min-w-0">
+                                <h4 className="font-bold text-slate-900 mb-1 break-words">{content.title}</h4>
+                                <p className="text-xs text-slate-600 break-words">
+                                  {topic?.name} • {chapter?.name} • {content.type.replace(/_/g, ' ')}
+                                </p>
+                              </div>
+                              <div className="text-right flex-shrink-0 ml-2">
+                                <div className="text-2xl font-bold text-purple-600">{result.score.toFixed(1)}</div>
+                                <div className="text-xs text-slate-500">Total Score</div>
+                              </div>
                             </div>
-                            <div className="flex-1">
-                              <div className="flex items-start justify-between gap-2 mb-2">
-                                <div>
-                                  <h4 className="font-bold text-slate-900 mb-1">{content.title}</h4>
-                                  <p className="text-xs text-slate-600">
-                                    {topic?.name} • {chapter?.name} • {content.type.replace(/_/g, ' ')}
-                                  </p>
-                                </div>
-                                <div className="text-right">
-                                  <div className="text-2xl font-bold text-purple-600">{result.score.toFixed(1)}</div>
-                                  <div className="text-xs text-slate-500">Total Score</div>
-                                </div>
-                              </div>
-                              
-                              {/* Free/Premium Badge */}
-                              <div className="mb-3">
-                                {content.isFree ? (
-                                  <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
-                                    🟢 Free Content
-                                  </span>
-                                ) : (
-                                  <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-semibold">
-                                    💎 Premium Content
-                                  </span>
-                                )}
-                              </div>
-
-                              {/* Score Breakdown */}
-                              {debug && (
-                                <div className="space-y-2 mt-3 p-3 bg-white rounded-lg border border-slate-200">
-                                  <p className="font-semibold text-slate-700 mb-2">Score Breakdown:</p>
-                                  
-                                  <div className="grid grid-cols-2 gap-2">
-                                    {/* Matched Tokens */}
-                                    <div className="col-span-2 p-2 bg-blue-50 rounded">
-                                      <div className="flex justify-between items-center mb-1">
-                                        <span className="text-xs text-blue-900 font-medium">Matched Tokens:</span>
-                                      </div>
-                                      <div className="flex flex-wrap gap-1">
-                                        {debug.matchedTokens && debug.matchedTokens.length > 0 ? (
-                                          debug.matchedTokens.map((token: string, i: number) => (
-                                            <span key={i} className="px-2 py-0.5 bg-blue-200 text-blue-900 rounded-full text-xs font-mono">
-                                              {token}
-                                            </span>
-                                          ))
-                                        ) : (
-                                          <span className="text-xs text-blue-700">None</span>
-                                        )}
-                                      </div>
-                                    </div>
-
-                                    {/* Title Matches */}
-                                    <div className="p-2 bg-purple-50 rounded">
-                                      <div className="text-xs text-purple-900 font-medium">Title Matches</div>
-                                      <div className="text-lg font-bold text-purple-700">{debug.titleMatches || 0}</div>
-                                    </div>
-
-                                    {/* Searchable Matches */}
-                                    <div className="p-2 bg-indigo-50 rounded">
-                                      <div className="text-xs text-indigo-900 font-medium">Searchable Matches</div>
-                                      <div className="text-lg font-bold text-indigo-700">{debug.searchableMatches || 0}</div>
-                                    </div>
-
-                                    {/* Free Content Boost */}
-                                    <div className={`p-2 rounded ${debug.freeContentBoost ? 'bg-green-50' : 'bg-gray-50'}`}>
-                                      <div className={`text-xs font-medium ${debug.freeContentBoost ? 'text-green-900' : 'text-gray-600'}`}>
-                                        Free Content Boost
-                                      </div>
-                                      <div className={`text-lg font-bold ${debug.freeContentBoost ? 'text-green-700' : 'text-gray-500'}`}>
-                                        {debug.freeContentBoost ? '+5' : '0'}
-                                      </div>
-                                    </div>
-
-                                    {/* Content Type Boost */}
-                                    <div className="p-2 bg-yellow-50 rounded">
-                                      <div className="text-xs text-yellow-900 font-medium">Content Type Boost</div>
-                                      <div className="text-lg font-bold text-yellow-700">+{debug.contentTypeBoost || 0}</div>
-                                    </div>
-
-                                    {/* Recency Boost */}
-                                    <div className={`p-2 rounded ${debug.recencyBoost ? 'bg-pink-50' : 'bg-gray-50'}`}>
-                                      <div className={`text-xs font-medium ${debug.recencyBoost ? 'text-pink-900' : 'text-gray-600'}`}>
-                                        Recency Boost
-                                      </div>
-                                      <div className={`text-lg font-bold ${debug.recencyBoost ? 'text-pink-700' : 'text-gray-500'}`}>
-                                        {debug.recencyBoost ? '+2' : '0'}
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  {/* Searchable Context */}
-                                  <div className="mt-3 p-2 bg-slate-100 rounded">
-                                    <div className="text-xs text-slate-700 font-medium mb-1">
-                                      🔍 Searchable Context:
-                                      <span className="ml-2 text-slate-500 font-normal">(Combined text used for matching)</span>
-                                    </div>
-                                    <div className="text-xs text-slate-600 break-words">
-                                      <span className="font-semibold text-slate-700">Includes: </span>
-                                      Title + Topic + Chapter + Subject
-                                    </div>
-                                    <div className="mt-2 p-2 bg-white rounded border border-slate-200">
-                                      <div className="text-xs text-slate-600 font-mono break-all">
-                                        {debug.searchableString || 'N/A'}
-                                      </div>
-                                    </div>
-                                  </div>
-
-                                  {/* Why This Rank */}
-                                  <div className="mt-3 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded border-l-4 border-purple-500">
-                                    <p className="text-xs font-semibold text-purple-900 mb-1">💡 Why this rank?</p>
-                                    <p className="text-xs text-slate-700">
-                                      {index === 0 && "🏆 Highest score! "}
-                                      {debug.titleMatches > 0 && `Strong title match (${debug.titleMatches} tokens). `}
-                                      {debug.searchableMatches > 0 && `Found in topic/chapter context (${debug.searchableMatches} matches). `}
-                                      {debug.freeContentBoost && "Free content prioritized (+5 boost). "}
-                                      {debug.contentTypeBoost > 0 && `High-value content type (+${debug.contentTypeBoost}). `}
-                                      {debug.recencyBoost && "Recent content (+2). "}
-                                      {!debug.titleMatches && !debug.searchableMatches && "Matched through fuzzy/partial matching."}
-                                    </p>
-                                  </div>
-                                </div>
+                            
+                            {/* Free/Premium Badge */}
+                            <div className="mb-3">
+                              {content.isFree ? (
+                                <span className="inline-block px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
+                                  🟢 Free Content
+                                </span>
+                              ) : (
+                                <span className="inline-block px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-xs font-semibold">
+                                  💎 Premium Content
+                                </span>
                               )}
                             </div>
+
+                            {/* Score Breakdown */}
+                            {debug && debug.scores && (
+                              <div className="mt-3 p-4 bg-white rounded-lg border border-slate-200 overflow-hidden">
+                                <h4 className="font-bold text-slate-800 mb-3 break-words">Score Breakdown (Match Type Scoring):</h4>
+
+                                {/* Match Type Calculation - Document-Level */}
+                                <div className="text-sm border p-4 rounded-lg bg-slate-50 overflow-hidden">
+                                  <p className="font-semibold text-slate-700 mb-3 text-base break-words">Match Type Analysis (Across All Fields)</p>
+                                  <p className="text-xs text-slate-600 mb-3 italic break-words">
+                                    Counts how many times the QUERY appears (not other words). 
+                                    Example: "photosynthesis" → counts "photosynthesis" and its Bengali translation "আলোকসংশ্লেষণ", not "Pro" or other words.
+                                  </p>
+                                  
+                                  {(() => {
+                                    // Use match type counters from debug info
+                                    const exactPhraseOccurrences = debug.exactPhraseMatches || 0;
+                                    const directTokenOccurrences = debug.directTokenMatches || 0;
+                                    const synonymOccurrences = debug.synonymMatches || 0;
+                                    const partialOccurrences = debug.partialMatches || 0;
+                                    const fuzzyOccurrences = debug.fuzzyMatches || 0;
+                                    
+                                    // Calculate scores
+                                    const exactPhraseScore = exactPhraseOccurrences * 10.0;
+                                    const directTokenScore = directTokenOccurrences * 8.0;
+                                    const synonymScore = synonymOccurrences * 5.0;
+                                    const partialScore = partialOccurrences * 3.0;
+                                    const fuzzyScore = fuzzyOccurrences * 1.0;
+                                    
+                                    const totalMatchScore = exactPhraseScore + directTokenScore + synonymScore + partialScore + fuzzyScore;
+                                    
+                                    return (
+                                      <>
+                                        <div className="space-y-2">
+                                          {/* Exact Phrase Match */}
+                                          <div className="flex items-center gap-2">
+                                            <span className="font-medium text-slate-600 flex-1 min-w-[200px]">🎯 Exact Phrase Match</span>
+                                            <span className="text-slate-500 text-xs text-center whitespace-nowrap">{exactPhraseOccurrences} occurrence{exactPhraseOccurrences === 1 ? '' : 's'}</span>
+                                            <span className="text-slate-500 text-xs text-center whitespace-nowrap">× 10.0</span>
+                                            <span className="font-bold text-slate-800 text-right text-base whitespace-nowrap min-w-[60px] flex-shrink-0">{exactPhraseScore.toFixed(1)}</span>
+                                          </div>
+                                          
+                                          {/* Direct Full-Token Match */}
+                                          <div className="flex items-center gap-2">
+                                            <span className="font-medium text-slate-600 flex-1 min-w-[200px]">✅ Direct Full-Token Match</span>
+                                            <span className="text-slate-500 text-xs text-center whitespace-nowrap">{directTokenOccurrences} occurrence{directTokenOccurrences === 1 ? '' : 's'}</span>
+                                            <span className="text-slate-500 text-xs text-center whitespace-nowrap">× 8.0</span>
+                                            <span className="font-bold text-slate-800 text-right text-base whitespace-nowrap min-w-[60px] flex-shrink-0">{directTokenScore.toFixed(1)}</span>
+                                          </div>
+                                          
+                                          {/* Synonym/Translation Match */}
+                                          <div className="flex items-center gap-2">
+                                            <span className="font-medium text-slate-600 flex-1 min-w-[200px]">🔄 Synonym/Translation Match</span>
+                                            <span className="text-slate-500 text-xs text-center whitespace-nowrap">{synonymOccurrences} occurrence{synonymOccurrences === 1 ? '' : 's'}</span>
+                                            <span className="text-slate-500 text-xs text-center whitespace-nowrap">× 5.0</span>
+                                            <span className="font-bold text-slate-800 text-right text-base whitespace-nowrap min-w-[60px] flex-shrink-0">{synonymScore.toFixed(1)}</span>
+                                          </div>
+                                          
+                                          {/* Partial/Prefix Match */}
+                                          <div className="flex items-center gap-2">
+                                            <span className="font-medium text-slate-600 flex-1 min-w-[200px]">🔤 Partial/Prefix Match</span>
+                                            <span className="text-slate-500 text-xs text-center whitespace-nowrap">{partialOccurrences} occurrence{partialOccurrences === 1 ? '' : 's'}</span>
+                                            <span className="text-slate-500 text-xs text-center whitespace-nowrap">× 3.0</span>
+                                            <span className="font-bold text-slate-800 text-right text-base whitespace-nowrap min-w-[60px] flex-shrink-0">{partialScore.toFixed(1)}</span>
+                                          </div>
+                                          
+                                          {/* Fuzzy/Typo Match */}
+                                          <div className="flex items-center gap-2">
+                                            <span className="font-medium text-slate-600 flex-1 min-w-[200px]">⚡ Fuzzy/Typo Match</span>
+                                            <span className="text-slate-500 text-xs text-center whitespace-nowrap">{fuzzyOccurrences} occurrence{fuzzyOccurrences === 1 ? '' : 's'}</span>
+                                            <span className="text-slate-500 text-xs text-center whitespace-nowrap">× 1.0</span>
+                                            <span className="font-bold text-slate-800 text-right text-base whitespace-nowrap min-w-[60px] flex-shrink-0">{fuzzyScore.toFixed(1)}</span>
+                                          </div>
+                                        </div>
+                                        
+                                        {/* Subtotal - Match Type Score */}
+                                        <div className="border-t my-3"></div>
+                                        <div className="flex items-center gap-2">
+                                          <span className="font-bold text-slate-800 flex-1 min-w-[200px]">Total Match Score (Base Score)</span>
+                                          <span className="font-extrabold text-lg text-blue-600 text-right whitespace-nowrap min-w-[60px] flex-shrink-0">{totalMatchScore.toFixed(1)}</span>
+                                        </div>
+                                      </>
+                                    );
+                                  })()}
+                                </div>
+
+                                {/* Boosts Section */}
+                                <div className="text-sm border p-3 rounded-lg bg-slate-50 mt-4">
+                                  <p className="font-semibold text-slate-700 mb-2 text-base">Boosts</p>
+                                  <div className="space-y-1">
+                                    <div className="flex justify-between items-center">
+                                      <span className="font-medium text-slate-600">Free Content Boost</span>
+                                      <span className="font-bold text-green-600 text-right">{debug.freeContentBoost ? '+0.5' : '0'}</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                      <span className="font-medium text-slate-600">Content Type Boost</span>
+                                      <span className="font-bold text-green-600 text-right">+{debug.contentTypeBoost.toFixed(1)}</span>
+                                    </div>
+                                  </div>
+                                  <div className="border-t my-2"></div>
+                                  <div className="flex justify-between items-center">
+                                    <span className="font-bold text-slate-800">Total Boosts</span>
+                                    <span className="font-extrabold text-lg text-green-600 text-right">
+                                      {(debug.freeContentBoost ? 0.5 : 0) + debug.contentTypeBoost}
+                                    </span>
+                                  </div>
+                                </div>
+
+                                {/* Final Score */}
+                                <div className="mt-4 text-center p-3 bg-blue-50 rounded-lg">
+                                  <p className="text-sm font-semibold">
+                                    Final Score = Match Type Score + Boosts = 
+                                    <span className="text-xl font-bold text-blue-600"> {(result.score.toFixed(1))}</span>
+                                  </p>
+                                  <p className="text-xs text-slate-600 mt-1">
+                                    (This is the ranking score used to sort results)
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+
+                            {/* Why This Rank */}
+                            {debug && (
+                              <div className="mt-3 p-3 bg-gradient-to-r from-blue-50 to-purple-50 rounded border-l-4 border-purple-500">
+                                <p className="text-xs font-semibold text-purple-900 mb-1">💡 Why this rank?</p>
+                                <p className="text-xs text-slate-700">
+                                  {index === 0 && "🏆 Highest score! "}
+                                  {(debug.exactPhraseMatches ?? 0) > 0 && "🎯 Exact phrase match. "}
+                                  {(debug.directTokenMatches ?? 0) > 0 && `✅ ${debug.directTokenMatches} direct token match${(debug.directTokenMatches ?? 0) > 1 ? 'es' : ''}. `}
+                                  {(debug.synonymMatches ?? 0) > 0 && `🔄 ${debug.synonymMatches} synonym/translation match${(debug.synonymMatches ?? 0) > 1 ? 'es' : ''}. `}
+                                  {(debug.partialMatches ?? 0) > 0 && `🔤 ${debug.partialMatches} partial/prefix match${(debug.partialMatches ?? 0) > 1 ? 'es' : ''}. `}
+                                  {(debug.fuzzyMatches ?? 0) > 0 && `⚡ ${debug.fuzzyMatches} fuzzy match${(debug.fuzzyMatches ?? 0) > 1 ? 'es' : ''}. `}
+                                  {debug.freeContentBoost && "Free content prioritized (+0.5 boost). "}
+                                  {debug.contentTypeBoost > 0 && `Content type boost (+${debug.contentTypeBoost.toFixed(1)}). `}
+                                  {debug.recencyBoost && "Recent content (+2). "}
+                                  {(debug.exactPhraseMatches ?? 0) === 0 && (debug.directTokenMatches ?? 0) === 0 && (debug.synonymMatches ?? 0) === 0 && (debug.partialMatches ?? 0) === 0 && (debug.fuzzyMatches ?? 0) === 0 && "No matches found."}
+                                </p>
+                              </div>
+                            )}
                           </div>
                         </div>
                       )
